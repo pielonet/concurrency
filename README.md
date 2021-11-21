@@ -6,7 +6,7 @@ Parallel processing and waiting queue simulations
 - Install Docker
 - Build concurrency php container
 ```
-docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un)
+docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) .
 ```
 - Run a script e.g simulateQueue.php
 ```

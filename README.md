@@ -1,6 +1,9 @@
 # concurrency
 Parallel processing and waiting queue simulations
 
+- PHP/parallel optimized run examples
+- Comparison between single and multiple waiting queues (at post office...)
+
 ## How to run
 
 - Install Docker

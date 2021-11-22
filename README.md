@@ -1,7 +1,7 @@
 # concurrency
 Parallel processing and waiting queue simulations
 
-- PHP/parallel optimized run examples
+- PHP/parallel optimized run examples (runs mostly the same as Guzzle/HTTP promises https://docs.guzzlephp.org/en/stable/quickstart.html#concurrent-requests)
 - Comparison between single and multiple waiting queues (at post office...)
 
 ## How to run

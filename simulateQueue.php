@@ -11,8 +11,8 @@ $params = [
     'standard_deviation_minutes' => 20,
     // linear check
 
-    'clients_min_desk_duration' => 30,
-    'clients_max_desk_duration' => 200,
+    'clients_min_desk_duration' => 30, // Minimum duration in seconds a client remains at desk
+    'clients_max_desk_duration' => 200, // Maximum duration in seconds a client remains at desk
     'simulation_wait_microseconds' => 0,
     'logger' => false,
 ];

@@ -81,7 +81,7 @@ function testConcurrency(int $concurrency, int $max_item_count) {
                 // Thread is inactive and generator still has values : run something in the thread
                 list($item_id, $sleep_seconds) = $generator->current();
                 $thread['future'] = $thread['runtime']->run($producer, [$item_id, $sleep_seconds]);
-                echo "ThreadId: $thread_id => Item: $item_id (Start)\n";
+                echo "ThreadId: $thread_id => Item: $item_id Sleep: {$sleep_seconds}s (Start)\n";
                 $generator->next();
             } elseif (!isset($thread['future'])) {
                 // Destroy thread in case generator is closed
@@ -90,7 +90,7 @@ function testConcurrency(int $concurrency, int $max_item_count) {
             } elseif ($thread['future']->done()) {
                 // Thread finished task. Get result value.
                 $item = $thread['future']->value();
-                echo "ThreadId: $thread_id => Item: {$item['item_id']} Sleep: {$item['sleep_seconds']}s (End)\n";
+                echo "ThreadId: $thread_id => Item: {$item['item_id']} (End)\n";
                 // Set thread ready to run again
                 unset($thread['future']);
             }

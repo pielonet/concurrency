@@ -16,10 +16,10 @@ $params = [
 
     //Parallel processing
     'simulate_in_parallel' => true,
-    'simulate_threads_count' => 10, // Number of parallel threads 10 is the default
+    'simulate_threads_count' => 10, // Number of parallel threads
 
     'simulation_wait_microseconds' => 0,
-    'logger' => false,
+    'write_log' => false,
 ];
 
 
@@ -36,8 +36,9 @@ function simulate(string $queue_type, array $params, int $iterations) {
         // Parallel processing
 
         $producer = function (array $params, string $queue_type) {
-            include_once __DIR__ . "/Queue.php";
-            return $queue_type($params);
+            include_once __DIR__ . "/lib/Queue.php";
+            $queue = new Queue($params['write_log']);
+            return $queue->$queue_type($params);
         };
 
         // Fill up threads with initial 'inactive' state

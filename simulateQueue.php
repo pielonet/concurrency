@@ -48,7 +48,7 @@ function simulate(string $queue_type, array $params, int $iterations) {
         while (true) {
             // Loop through threads until all threads are finished
             foreach ($threads as $thread_id => &$thread) {
-                if (!isset($thread['future']) and $iteration < $iterations) {
+                if (!isset($thread['future']) and $iteration <= $iterations) {
                     // Thread is inactive and generator still has values : run something in the thread
                     $thread['future'] = \parallel\run($producer, [$params, $queue_type]);
                     $iteration++;

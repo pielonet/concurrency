@@ -42,36 +42,41 @@ function simulate(string $queue_type, array $params, int $iterations) {
         };
 
         // Fill up threads with initial 'inactive' state
-        $threads = array_fill(1, $params['simulate_threads_count'], []);
+        $threads = array_fill(1, $params['simulate_threads_count'], null);
 
         $iteration = 1;
-        while (true) {
+        while (! empty($threads)) {// Escape loop when all threads are destroyed
             // Loop through threads until all threads are finished
             foreach ($threads as $thread_id => &$thread) {
-                if (!isset($thread['future']) and $iteration <= $iterations) {
-                    // Thread is inactive and generator still has values : run something in the thread
-                    $thread['future'] = \parallel\run($producer, [$params, $queue_type]);
-                    $iteration++;
-                } elseif (!isset($thread['future'])) {
-                    // Destroy thread in case generator is closed
+                if (is_null($thread)) {
+                    if ($iteration <= $iterations) {
+                        // Thread is inactive and there are still iterations to run : run something in the thread
+                        $thread = \parallel\run($producer, [$params, $queue_type]);
+                        $iteration++;
+                        continue;
+                    }
+
+                    // Destroy thread in case all iterations are done
                     unset($threads[$thread_id]);
-                } elseif ($thread['future']->done()) {
+                    continue;
+                }
+
+                //$thread is a future, test if task is done
+                if ($thread->done()) {
                     // Thread finished task. Get result value.
-                    list($clients_count, $total_duration, $max_wait_duration, $average_wait_duration) = $thread['future']->value();
+                    list($clients_count, $total_duration, $max_wait_duration, $average_wait_duration) = $thread->value();
                     $results[] = compact('clients_count', 'total_duration', 'max_wait_duration', 'average_wait_duration');
                     // Set thread ready to run again
-                    unset($thread['future']);
+                    $thread = null;
                 }
             }
-
-            // Escape loop when all threads are destroyed
-            if (empty($threads)) break;
         }
     } else {
         // Sequential processing
-        include_once __DIR__ . "/Queue.php";
+        include_once __DIR__ . "/lib/Queue.php";
+        $queue = new Queue($params['write_log']);
         for ($n = 1; $n <= $iterations; $n++) {
-            list($clients_count, $total_duration, $max_wait_duration, $average_wait_duration) = $queue_type($params);
+            list($clients_count, $total_duration, $max_wait_duration, $average_wait_duration) = $queue->$queue_type($params);;
             $results[] = compact('clients_count', 'total_duration', 'max_wait_duration', 'average_wait_duration');
         }
     }

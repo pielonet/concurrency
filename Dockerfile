@@ -1,14 +1,17 @@
 #docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) .
-FROM php:7.2-zts
+FROM php:8.3-zts-alpine
 
-RUN apt-get update \
-  && apt-get -y install openssh-client git
+#RUN apk add --no-cache openssh
 
-RUN pecl install parallel-1.1.4 \
+# Install the necessary packages to install pecl extensions
+# @ref https://stackoverflow.com/questions/61282013/pecl-package-installation-fail-in-docker
+RUN apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS
+
+# Install PHP/parallel extension
+# @ref https://pecl.php.net/package/parallel
+# @ref https://github.com/krakjoe/parallel
+RUN pecl install parallel-1.2.2 \
   && docker-php-ext-enable parallel
-
-RUN pecl install stats-2.0.3 \
-  && docker-php-ext-enable stats
 
 # accept the arguments from build-args
 ARG PUID 
@@ -17,5 +20,8 @@ ARG USER
 
 # Add the group (if not existing) 
 # then add the user to the numbered group 
-RUN groupadd -g ${PGID} ${USER} || true && \
-    useradd --create-home --uid ${PUID} --gid `getent group ${PGID} | cut -d: -f1` ${USER} || true 
+# @ref https://www.baeldung.com/ops/docker-set-user-container-host
+RUN addgroup -g ${PGID} -S ${USER} || true && \
+    adduser -S -G ${USER} -h /home/${USER} -u ${PUID} ${USER} || true
+
+USER ${USER}

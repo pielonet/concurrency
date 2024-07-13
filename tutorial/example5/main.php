@@ -19,7 +19,7 @@ $sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_
 $futures = array_fill(0, count($config['rooms']), null);
 
 // Iterate over persons names with a generator
-$persons_generator = function(array $names) {
+$names_generator = function(array $names) {
     // Shuffle names list for fun !
     shuffle($names);
     foreach ($names as $name)  {
@@ -27,7 +27,7 @@ $persons_generator = function(array $names) {
     }
 };
 
-$persons = $persons_generator($config['names']);
+$names = $names_generator($config['names']);
 
 echo("zzz...". PHP_EOL);
 
@@ -35,13 +35,14 @@ while (!empty($futures)) {
     foreach($futures as $key => &$future) {
         if (is_null($future)) {
             // Future is unaffected
-            if ($persons->valid()) {
+            if ($names->valid()) {
                 // There are still persons available : put someone to sleep
+                $name = $names->current();
                 $future = \parallel\run(
                     $sleep,
-                    [$persons->current(), $config['min_sleep_time_seconds'], $config['max_sleep_time_seconds'], $config['statuses'], $config['rooms'][$key]]
+                    [$name, $config['min_sleep_time_seconds'], $config['max_sleep_time_seconds'], $config['statuses'], $config['rooms'][$key]]
                 );
-                $persons->next();
+                $names->next();
                 continue;
             }
 

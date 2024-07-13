@@ -22,13 +22,32 @@ class Queue {
         return $result;
     }
 
+
+    /**
+     * "Box–Muller transform" based random deviate generator.
+     *
+     * @ref https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+     * @ref https://www.php.net/manual/en/function.stats-rand-gen-normal.php
+     * 
+     * @param  float|int $av Average/Mean
+     * @param  float|int $sd Standard deviation
+     * @return float
+     */
+    private function stats_rand_gen_normal($av, $sd): float
+    {
+        $x = mt_rand() / mt_getrandmax();
+        $y = mt_rand() / mt_getrandmax();
+    
+        return sqrt(-2 * log($x)) * cos(2 * pi() * $y) * $sd + $av;
+    }
+
     /**
      * Generate arrival times using a normal distribution
      * Distribution is centered at $peak_time_minutes and has a standard deviation of $standard_deviation_minutes
      */
     private function generateNormalArrivalTimes(int $peak_time_minutes, int $standard_deviation_minutes, int $clients_count_max): array {
         for ($i=1; $i <= $clients_count_max; $i++) {
-            $result[] = round(\stats_rand_gen_normal($peak_time_minutes*60, $standard_deviation_minutes*60)) . "\n";
+            $result[] = round($this->stats_rand_gen_normal($peak_time_minutes*60, $standard_deviation_minutes*60)) . "\n";
         }
 
         return $result;

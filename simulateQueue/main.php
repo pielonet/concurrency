@@ -2,6 +2,8 @@
 
 include_once(__DIR__ . "/config.php");
 
+print_r($config);
+
 simulate('multipleQueue', $config);
 simulate('singleQueue', $config);
 
@@ -9,8 +11,7 @@ simulate('singleQueue', $config);
 // ==========================================
 
 function simulate(string $queue_type, array $config) {
-    echo "== Queue type : $queue_type ==\n";
-    print_r($config);
+    echo "\n== Queue type : $queue_type ==\n";
     if ($config['simulate_threads_count'] >= 2) {
         // Parallel processing
 

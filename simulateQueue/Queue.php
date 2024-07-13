@@ -38,27 +38,25 @@ class Queue {
         if ($this->write_log) echo $text;
     }
 
-    public function singleQueue(array $params) {
-
-        extract($params);
+    public function singleQueue(array $config) {
 
         $time = 0;
         $queue = [];
         $clients = [];
         $clients_entered_count = 0;
 
-        $desks = array_fill(1, $desks_count, null);
+        $desks = array_fill(1, $config['desks_count'], null);
 
-        if ($arrival_probability_law == 'normal') {
-            $arrival_times = $this->generateNormalArrivalTimes($peak_time_minutes, $standard_deviation_minutes, $clients_count_max);
+        if ($config['arrival_probability_law'] == 'normal') {
+            $arrival_times = $this->generateNormalArrivalTimes($config['peak_time_minutes'], $config['standard_deviation_minutes'], $config['clients_count_max']);
         } else {
-            $arrival_times = $this->generateLinearArrivalTimes($clients_count_max, $office_open_duration_seconds);
+            $arrival_times = $this->generateLinearArrivalTimes($config['clients_count_max'], $config['office_open_duration_seconds']);
         }
 
         while (true) {
             $this->logger("Time: {$time}s\n");
             //$client_enters_queue = (checkLinearArrivalTimes($client_arrive_probability) and $time < $office_open_duration_seconds) ? true : false;
-            $client_enters_queue = (in_array($time, $arrival_times) and $time < $office_open_duration_seconds) ? true : false;
+            $client_enters_queue = (in_array($time, $arrival_times) and $time < $config['office_open_duration_seconds']) ? true : false;
             if ($client_enters_queue) {
                 $clients_entered_count++;
                 $this->logger("ClientId $clients_entered_count enters queue. ");
@@ -84,7 +82,7 @@ class Queue {
                         $client = &$clients[$new_client_id];
                         $client['queue_wait_duration'] = $time - $client['enters_queue_time'];
                         $client['desk_visited'] = $desk_id;
-                        $desk_duration = rand($clients_min_desk_duration_seconds, $clients_max_desk_duration_seconds);
+                        $desk_duration = rand($config['clients_min_desk_duration_seconds'], $config['clients_max_desk_duration_seconds']);
                         $client['leaves_desk_time'] = $time + $desk_duration;
                         $this->logger("ClientId $client_id enters deskId $desk_id for {$desk_duration}s. ");
                         $this->logger("Client waited {$client['queue_wait_duration']}s in queue. ");
@@ -95,11 +93,12 @@ class Queue {
             }
             unset($client_id);
             $time++;
-            usleep($simulation_wait_microseconds);
+            usleep($config['simulation_wait_microseconds']);
+            if ($config['display_simulation']) $this->singleQueueToTxt($queue, $desks);
 
             // End simulation
             //if (count($clients) == $clients_count_max) {
-            if ($time >= $office_open_duration_seconds) {
+            if ($time >= $config['office_open_duration_seconds']) {
                 foreach($desks as $client_id) {
                     if (!is_null($client_id)) continue 2;
                 }
@@ -121,27 +120,35 @@ class Queue {
         return [$clients_count, $time, $max_wait_duration, $average_wait_duration];
     }
 
-    public function multipleQueue(array $params) {
+    private function singleQueueToTxt(array $queue, array $desks) {
 
-        extract($params);
+        $txt = "== Single queue ==\n";
+        $txt .= "Main queue :" . implode(" ", $queue) . PHP_EOL;
+        foreach ($desks as $desk_id => $client_id) {
+            $txt .= "Desk $desk_id : $client_id" . PHP_EOL;
+        }
+        file_put_contents(__DIR__ . "/out.txt", $txt);
+    }
+
+    public function multipleQueue(array $config) {
 
         $time = 0;
         $clients = [];
         $clients_entered_count = 0;
 
-        $desks = array_fill(1, $desks_count, null);
-        $queues = array_fill(1, $desks_count, []);
+        $desks = array_fill(1, $config['desks_count'], null);
+        $queues = array_fill(1, $config['desks_count'], []);
 
-        if ($arrival_probability_law == 'normal') {
-            $arrival_times = $this->generateNormalArrivalTimes($peak_time_minutes, $standard_deviation_minutes, $clients_count_max);
+        if ($config['arrival_probability_law'] == 'normal') {
+            $arrival_times = $this->generateNormalArrivalTimes($config['peak_time_minutes'], $config['standard_deviation_minutes'], $config['clients_count_max']);
         } else {
-            $arrival_times = $this->generateLinearArrivalTimes($clients_count_max, $office_open_duration_seconds);
+            $arrival_times = $this->generateLinearArrivalTimes($config['clients_count_max'], $config['office_open_duration_seconds']);
         }
         
         while (true) {
             $this->logger("Time: {$time}s\n");
             //$client_enters_queue = (checkWithLinearProbability($client_arrive_probability) and $time < $office_open_duration_seconds) ? true : false;
-            $client_enters_queue = (in_array($time, $arrival_times) and $time < $office_open_duration_seconds) ? true : false;
+            $client_enters_queue = (in_array($time, $arrival_times) and $time < $config['office_open_duration_seconds']) ? true : false;
             if ($client_enters_queue) {
                 $clients_entered_count++;
                 $clients[$clients_entered_count]['enters_queue_time'] = $time;
@@ -171,7 +178,7 @@ class Queue {
                         $client = &$clients[$new_client_id];
                         $client['queue_wait_duration'] = $time - $client['enters_queue_time'];
                         $client['desk_visited'] = $desk_id;
-                        $desk_duration = rand($clients_min_desk_duration_seconds, $clients_max_desk_duration_seconds);
+                        $desk_duration = rand($config['clients_min_desk_duration_seconds'], $config['clients_max_desk_duration_seconds']);
                         $client['leaves_desk_time'] = $time + $desk_duration;
                         $this->logger("ClientId $client_id enters deskId $desk_id for {$desk_duration}s. ");
                         $this->logger("Client waited {$client['queue_wait_duration']}s in queue. ");
@@ -182,11 +189,12 @@ class Queue {
             }
             unset($client_id);
             $time++;
-            usleep($simulation_wait_microseconds);
+            usleep($config['simulation_wait_microseconds']);
+            if ($config['display_simulation']) $this->multipleQueueToTxt($queues, $desks);
 
             // End simulation
             //if (count($clients) == $clients_count_max) {
-            if ($time >= $office_open_duration_seconds) {
+            if ($time >= $config['office_open_duration_seconds']) {
                 foreach($desks as $client_id) {
                     if (!is_null($client_id)) continue 2;
                 }
@@ -206,5 +214,16 @@ class Queue {
         $this->logger("Average wait duration: {$average_wait_duration}s" . PHP_EOL);
 
         return [$clients_count, $time, $max_wait_duration, $average_wait_duration];
+    }
+
+    private function multipleQueueToTxt(array $queues, array $desks) {
+
+        $txt = "== Multiple queues ==\n";
+        foreach ($queues as $queue_id => $client_ids) {
+            $txt .= "Queue $queue_id : " . implode(" ", $client_ids) . PHP_EOL;
+            $client_id = $desks[$queue_id];
+            $txt .= "Desk $queue_id : $client_id"  . PHP_EOL;
+        }
+        file_put_contents(__DIR__ . "/out.txt", $txt);
     }
 }

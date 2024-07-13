@@ -35,8 +35,13 @@ $config = [
     // Set to 0 for no wait (maximum acceleration, recommended for benchmark), set to 10000 to accelerate time by 100
     'simulation_wait_microseconds' => 0,
 
+    // Write log of simulation
     // Set to false for benchmark
     'write_log' => false,
+
+    // Display simulation
+    // Set to false for benchmark
+    'display_simulation' => false,
 
     // Number of simulations to run
     'iterations_count' => 100,

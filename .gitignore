@@ -1,3 +1,4 @@
 *.log
 out.txt
 config.php
+vendor/

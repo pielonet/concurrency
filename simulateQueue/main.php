@@ -11,11 +11,12 @@ simulate('singleQueue', $config);
 // ==========================================
 
 function simulate(string $queue_type, array $config) {
+    $time_start = microtime(true);
     echo "\n== Queue type : $queue_type ==\n";
     if ($config['simulate_threads_count'] >= 2) {
         // Parallel processing
 
-        $producer = function (array $config, string $queue_type) {
+        $task = function (array $config, string $queue_type) {
             include_once __DIR__ . "/Queue.php";
             $queue = new Queue($config['write_log']);
             return $queue->$queue_type($config);
@@ -31,7 +32,7 @@ function simulate(string $queue_type, array $config) {
                 if (is_null($future)) {
                     if ($iteration <= $config['iterations_count']) {
                         // Thread is inactive and there are still iterations to run : run something in the thread
-                        $future = \parallel\run($producer, [$config, $queue_type]);
+                        $future = \parallel\run($task, [$config, $queue_type]);
                         $iteration++;
                         continue;
                     }
@@ -77,5 +78,9 @@ function simulate(string $queue_type, array $config) {
     $column = array_column($results, 'average_wait_duration');
     $average_average = round(array_sum($column) / $count);
     echo "Average average wait duration: {$average_average}s\n";
+
+    $time_end = microtime(true);
+    $simulation_duration = $time_end - $time_start;
+    echo "Simulation duration: {$simulation_duration}s\n";
 }
 

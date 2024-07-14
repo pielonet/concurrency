@@ -1,6 +1,8 @@
 #docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) .
 FROM php:8.3-zts-alpine
 
+RUN apk update
+
 #RUN apk add --no-cache openssh
 
 # Install the necessary packages to install pecl extensions
@@ -12,6 +14,11 @@ RUN apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS
 # @ref https://github.com/krakjoe/parallel
 RUN pecl install parallel-1.2.2 \
   && docker-php-ext-enable parallel
+
+# Install Composer
+# @ref https://getcomposer.org/doc/00-intro.md#docker-image
+# Latest release
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 # accept the arguments from build-args
 ARG PUID 

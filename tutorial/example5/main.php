@@ -1,12 +1,13 @@
 <?php
 /* 
  * multiple sleepers in limited number of rooms
+ * Wait for multiple tasks to complete
  */
 
 include_once("config.php");
 
-// Function that will be executed in each future (producer)
-$sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses, string $room) {
+// Function that will be executed in each future (task)
+$task = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses, string $room) {
     $sleep_time = rand($min_sleep_time_seconds, $max_sleep_time_seconds);
     echo("$who goes to sleep in $room". PHP_EOL);
     sleep($sleep_time);
@@ -39,7 +40,7 @@ while (!empty($futures)) {
                 // There are still persons available : put someone to sleep
                 $name = $names->current();
                 $future = \parallel\run(
-                    $sleep,
+                    $task,
                     [$name, $config['min_sleep_time_seconds'], $config['max_sleep_time_seconds'], $config['statuses'], $config['rooms'][$key]]
                 );
                 $names->next();

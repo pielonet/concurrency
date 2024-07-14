@@ -1,6 +1,10 @@
 <?php
 /* 
- * 2 parallel sleepers
+ * Ann and Bob sleep simultaneously
+ * 
+ * public parallel\Future::done(): bool
+ * Shall indicate if the task is completed 
+ * @ref https://www.php.net/manual/en/parallel-future.done.php
  */
 
 $sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {

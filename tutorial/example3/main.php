@@ -1,6 +1,11 @@
 <?php
 /* 
- * Sleep return value
+ * Ann is having a snap
+ * Future return value
+ * 
+ * public parallel\Future::value(): mixed
+ * Shall return (and if necessary wait for) return from task 
+ * @ref https://www.php.net/manual/en/parallel-future.value.php
  */
 
 $sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {

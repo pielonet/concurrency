@@ -1,11 +1,15 @@
 <?php
+/**
+ * Parallel SSH with SSH2 extension
+ */
+
 
 include_once('config.php');
 
 // Function that will be executed in each future (task)
 $task = function (array $config, int $task_id, string $command) {
-    include_once('SSH.php');
-    $ssh_connection = new SSH($config);
+    include_once('SSH2.php');
+    $ssh_connection = new SSH2($config);
     $response = $ssh_connection->exec($command);
     return [$task_id, $response];
 };
@@ -16,13 +20,13 @@ $futures = array_fill(0, $config['concurrency'], null);
 
 
 // Iterate over persons names with a generator
-$commands_generator = function(int $commands_count, string $command) {
+function generator(int $commands_count, string $command) {
     for ($i=1; $i <= $commands_count; $i++) {
         yield [$i, $command];
     }
 };
 
-$commands = $commands_generator($config['commands_count'], $config['command']);
+$commands = generator($config['commands_count'], $config['command']);
 
 while (!empty($futures)) {
     foreach($futures as $key => &$future) {

@@ -20,15 +20,15 @@ $task = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_
 $futures = array_fill(0, count($config['rooms']), null);
 
 // Iterate over persons names with a generator
-$names_generator = function(array $names) {
+function names_generator (array $names) {
     // Shuffle names list for fun !
     shuffle($names);
     foreach ($names as $name)  {
         yield $name;
     }
 };
-
-$names = $names_generator($config['names']);
+// Create a Generator
+$names = names_generator($config['names']);
 
 echo("zzz...". PHP_EOL);
 

@@ -20,6 +20,8 @@ RUN apk add --no-cache libssh2-dev
 RUN pecl install ssh2-1.4.1 \
   && docker-php-ext-enable ssh2
 
+RUN apk add --no-cache openssh
+
 # Install Composer
 # @ref https://getcomposer.org/doc/00-intro.md#docker-image
 # Latest release

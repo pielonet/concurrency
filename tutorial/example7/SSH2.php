@@ -1,6 +1,6 @@
 <?php
 
-class SSH {
+class SSH2 {
 
     // SSH Host
 

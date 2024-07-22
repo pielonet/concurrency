@@ -8,7 +8,7 @@ include_once("config.php");
 
 // Install Guzzle 7 if not yet installed
 chdir(__DIR__);
-exec("composer install", $output, $result_code);
+shell_exec("composer install");
 
 // Load Guzzle
 require "vendor/autoload.php";

@@ -6,7 +6,9 @@
  */
 
 include_once('config.php');
-include_once('Concurrency.php');
+include_once('Pool.php');
+
+use \Concurrency\Pool;
 
 // Function that will be executed in each future (task)
 $task = function (array $config, int $task_id, string $command) {
@@ -30,21 +32,23 @@ function generator(array $config) {
 
 $generator = generator($config);
 
-$callback = function (int $task_id, string $ssh_response, float $duration) {
+// Function that will be executed each time a future completes,
+// it receives the return values from the task as arguments
+$fulfilled = function (int $task_id, string $ssh_response, float $duration) {
     echo "Task: $task_id, Response: $ssh_response\n";
     return compact('task_id', 'ssh_response', 'duration');
 };
 
-$concurrency = new Concurrency(
+$pool = new Pool(
     concurrency: $config['concurrency'],
     task: $task,
     generator: $generator,
-    callback: $callback
+    fulfilled: $fulfilled
 );
 
-$concurrency->wait();
+$pool->wait();
 
-$requests = $concurrency->getResponse();
+$requests = $pool->getResponse();
 $requests_count = count($requests);
 echo "$requests_count SSH requests.\n";
 $column = array_column($requests, 'duration');

@@ -1,7 +1,7 @@
 <?php
 /* 
  * Alice and Bob sleep simultaneously
- * Get Future return value as soon as it completes
+ * Complete the missing pieces of code so that you get their statuses as soon as they come back from sleep
  * 
  * public parallel\Future::done(): bool
  * Shall indicate if the task is completed 
@@ -22,12 +22,12 @@ $futures[2] = \parallel\run($sleep, ["Bob", 5, 10, ["quite well", "thoughtfully"
 
 echo("zzz...\n");
 
-while (!empty($futures)) {
+while (/* REPLACE ME */) {
     foreach($futures as $key => $future) {
-        if ($future->done()) {
-            list($who, $sleep_time, $status) = $future->value();
+        if (/* REPLACE ME */) {
+            list($who, $sleep_time, $status) = /* REPLACE ME */;
             echo("$who slept $status $sleep_time seconds". PHP_EOL);
-            unset($futures[$key]);
+            unset(/* REPLACE ME */);
         }
     }
 }

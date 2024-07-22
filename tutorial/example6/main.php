@@ -34,7 +34,10 @@ function testConcurrency(int $concurrency, array $config) {
         'concurrency' => $concurrency,
         'fulfilled' => function (Response $response, $index) use ($config) {
             // this is delivered each successful response
-            echo "downloaded {$config['uris'][$index]}, ";
+            $body = $response->getBody();
+            // Explicitly cast the body to a string
+            $stringBody = (string) $body;
+            echo "downloaded {$config['uris'][$index]}: " . substr($stringBody, 0, 10) . "..., ";
         },
         'rejected' => function (RequestException $reason, $index) {
             // this is delivered each failed request

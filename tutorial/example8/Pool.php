@@ -1,20 +1,23 @@
 <?php
-class Concurrency {
+
+namespace Concurrency;
+
+class Pool {
     private int $concurrency;
 
-    private Closure $task;
+    private \Closure $task;
 
-    private Generator $generator;
+    private \Generator $generator;
 
-    private Closure $callback;
+    private \Closure $fulfilled;
 
     private array $response;
 
-    public function __construct(Closure $task, Generator $generator, Closure $callback, int $concurrency = 5 ) {
+    public function __construct(\Closure $task, \Generator $generator, \Closure $fulfilled, int $concurrency = 5 ) {
         $this->concurrency = $concurrency;
         $this->task = $task;
         $this->generator = $generator;
-        $this->callback = $callback;
+        $this->fulfilled = $fulfilled;
     }
 
     public function wait() {
@@ -43,7 +46,7 @@ class Concurrency {
                 }
                 if ($future->done()) {
                     $response = $future->value();
-                    $grand_response[] = call_user_func_array($this->callback, $response);
+                    $grand_response[] = call_user_func_array($this->fulfilled, $response);
 
                     // Set future ready for new task
                     $future = null;
@@ -56,7 +59,7 @@ class Concurrency {
 
     public function getResponse() {
         if (!isset($this->response)) {
-            throw new Exception("Call function wait before");
+            throw new \Exception("Call function wait before");
         }
 
         return $this->response;

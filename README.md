@@ -32,9 +32,9 @@ Each exampleX (where X stands for the number of the example) can be run with the
 
 - `example1` : "Bzz !", Run two simple tasks in parallel
 - `example2` : "Molière !" Run many tasks in paralell with arguments
-- `example3` : "Ann is having a snap !", Future return value
-- `example4` : "Ann and Bob sleep simultaneously"
-- `example5` : "multiple sleepers in limited number of rooms", Wait for multiple tasks to complete
+- `example3` : "Alice is having a snap !", Future object and return value
+- `example4` : "Alice and Bob sleep simultaneously", Get Future return value as soon as it completes
+- `example5` : "multiple sleepers in limited number of rooms", Launch tasks in parallel in a limited number of threads and wait for them to complete
 - `example6` : "http only !", Parallel download with Guzzle 7
 - `example7` : "SSH the PHP way ! ", Parallel SSH with SSH2 extension
 - `example8` : "generic !", Parallel SSH as exec shell command and generic concurrency class

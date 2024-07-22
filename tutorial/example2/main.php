@@ -13,7 +13,7 @@ $words = explode(" ", $sentence);
 
 foreach($words as $word) {
     \parallel\run(
-        function($word) {
+        function(string $word) {
             usleep(rand(1, 10000000));
             echo "$word ";
         },

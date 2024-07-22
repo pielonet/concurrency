@@ -1,7 +1,7 @@
 <?php
 /* 
- * multiple sleepers in limited number of rooms
- * Wait for multiple tasks to complete
+ * Multiple sleepers in limited number of rooms
+ * Launch tasks in parallel in a limited number of threads and wait for them to complete
  */
 
 include_once("config.php");
@@ -16,7 +16,7 @@ $task = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_
 };
 
 // Reserve as many futures as there are rooms
-// Initialize all futures to value "null" which means "unaffected = ready to run task"
+// Initialize all futures to value "null" which means "unassigned = ready to run task"
 $futures = array_fill(0, count($config['rooms']), null);
 
 // Iterate over persons names with a generator
@@ -35,7 +35,7 @@ echo("zzz...". PHP_EOL);
 while (!empty($futures)) {
     foreach($futures as $key => &$future) {
         if (is_null($future)) {
-            // Future is unaffected
+            // Future is unassigned
             if ($names->valid()) {
                 // There are still persons available : put someone to sleep
                 $name = $names->current();

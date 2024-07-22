@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Run two tasks in parallel
+ * Bzz !
+ * Run two simple tasks in parallel
  * 
  * parallel\run(Closure $task): ?Future
  * Shall schedule task for execution in parallel.

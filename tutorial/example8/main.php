@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * generic !
  * Parallel SSH as exec shell command and generic concurrency class
  */
 

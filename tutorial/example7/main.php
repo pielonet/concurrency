@@ -1,5 +1,6 @@
 <?php
 /**
+ * SSH the PHP way
  * Parallel SSH with SSH2 extension
  */
 

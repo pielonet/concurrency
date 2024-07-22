@@ -1,7 +1,7 @@
 <?php
 /**
  * Molière !
- * Run many task in paralell with arguments
+ * Run many tasks in paralell with arguments
  * 
  * parallel\run(Closure $task, array $argv): ?Future
  * Shall schedule task for execution in parallel, passing argv at execution time. 

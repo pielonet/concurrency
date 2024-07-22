@@ -1,5 +1,6 @@
 <?php
-/* 
+/**
+ * http only !
  * Parallel download with Guzzle 7
  * @ref https://docs.guzzlephp.org/en/stable/quickstart.html?highlight=concurrency#concurrent-requests
  */

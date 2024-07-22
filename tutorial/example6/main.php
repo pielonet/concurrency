@@ -31,9 +31,9 @@ function testConcurrency(int $concurrency, array $config) {
 
     $pool = new Pool($client, $requests($config), [
         'concurrency' => $concurrency,
-        'fulfilled' => function (Response $response, $index) {
+        'fulfilled' => function (Response $response, $index) use ($config) {
             // this is delivered each successful response
-            echo "downloaded $index, ";
+            echo "downloaded {$config['uris'][$index]}, ";
         },
         'rejected' => function (RequestException $reason, $index) {
             // this is delivered each failed request

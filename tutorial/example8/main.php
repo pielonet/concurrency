@@ -26,7 +26,7 @@ $task = function (array $config, int $task_id, string $command) {
 function generator(array $config) {
     extract($config);
     for ($task_id=1; $task_id <= $commands_count; $task_id++) {
-        yield compact('config', 'task_id', 'command');
+        yield [$config, $task_id, $command];
     }
 };
 

@@ -1,6 +1,6 @@
 1. A closure scheduled for parallel execution must not contain
-a. variable definitions b.named function definition
-c. "yield" instruction d. files inclusions
+a. variable definitions b.named function definitions
+c. "yield" instructions d. files inclusions
 
 2. The following code will :
 
@@ -22,7 +22,7 @@ echo $config['one'];
 
 ```
 
-a. echo "122" b. echo "222" c. echo "121" d. Produce a runtime error
+a. echo "122" b. echo "211" c. echo "121" d. Produce a runtime error
 
 3. The following code will :
 
@@ -44,7 +44,7 @@ echo $config['one'];
 
 ```
 
-a. echo "122" b. echo "222" c. echo "121" d. Produce a runtime error
+a. echo "122" b. echo "211" c. echo "121" d. Produce a runtime error
 
 4. The following code will :
 ```php

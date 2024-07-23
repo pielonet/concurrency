@@ -44,64 +44,44 @@
  * Destroy ThreadId: 3
  */
 
+include_once("lib/Pool.php");
+
+use \Concurrency\Pool;
+
+// Function executing in each thread. Have a snap for a random time for example !
+// You could make some calculation here or transfer files or whatever...
+$task = function (int $item_id, int $sleep_seconds) {
+    echo "Item $item_id sleeps for {$sleep_seconds}s\n";
+    sleep($sleep_seconds);
+    return [$item_id, $sleep_seconds];
+};
+
 
 // Generate list of items to process with a generator
 function generator(int $item_count) {
     echo "Item count: $item_count\n";
-    for ($i=1; $i <= $item_count; $i++) {
+    for ($item_id=1; $item_id <= $item_count; $item_id++) {
         $sleep_seconds = rand(1, 10);
-        yield [$i, $sleep_seconds];
+        yield [$item_id, $sleep_seconds];
     }
 }
 
-function testConcurrency(int $concurrency, int $max_item_count) {
+// Set item_count to a random number so that each run is different
+$item_count= rand(1, 20);
+// Create generator
+$generator = generator($item_count);
 
-    // Set item_count to a random number so that each run is different
-    $item_count= rand(1, $max_item_count);
-    // Create generator
-    $generator = generator($item_count);
+$fulfilled = function (int $item_id, int $sleep_seconds) {
+    echo "Item $item_id slept for {$sleep_seconds}s\n";
+    return compact('item_id', 'sleep_seconds');
+};
 
-    // Function executing in each thread. Have a snap for a random time for example !
-    // You could make some calculation here or transfer files or whatever...
-    $producer = function (int $item_id, int $sleep_seconds) {
-        sleep($sleep_seconds);
-        return ['item_id' => $item_id, 'sleep_seconds' => $sleep_seconds];
-    };
+$pool = new Pool(
+    concurrency: 5,
+    task: $task,
+    generator: $generator,
+    fulfilled: $fulfilled
+);
 
- 
-   // Fill up threads with initial 'inactive' state
-    $threads = array_fill(1, $concurrency, []);
+$pool->wait();
 
-    while (true) {
-        // Loop through threads until all threads are finished
-        foreach ($threads as $thread_id => &$thread) {
-            if (!isset($thread['future']) and $generator->valid()) {
-                // Thread is inactive and generator still has values : run something in the thread
-                list($item_id, $sleep_seconds) = $generator->current();
-                $thread['future'] = \parallel\run($producer, [$item_id, $sleep_seconds]);
-                echo "ThreadId: $thread_id => Item: $item_id Sleep: {$sleep_seconds}s (Start)\n";
-                $generator->next();
-            } elseif (!isset($thread['future'])) {
-                // Destroy thread in case generator is closed
-                echo "Destroy ThreadId: $thread_id\n";
-                unset($threads[$thread_id]);
-            } elseif ($thread['future']->done()) {
-                // Thread finished task. Get result value.
-                $item = $thread['future']->value();
-                echo "ThreadId: $thread_id => Item: {$item['item_id']} (End)\n";
-                // Set thread ready to run again
-                unset($thread['future']);
-            }
-        }
-
-        // Escape loop when all threads are destroyed
-        if (empty($threads)) break;
-    }
-}
-
-$concurrency = 5;
-$item_count = 25;
-
-testConcurrency($concurrency, $item_count);
-
-?>

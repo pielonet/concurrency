@@ -18,7 +18,7 @@ $task = function (array $config, int $task_id, string $command) {
     $ssh_response = $ssh_connection->exec($command);
     $end = microtime(true);
     $duration = $end - $start;
-    return [$task_id, $ssh_response, $duration];
+    return compact('task_id', 'ssh_response', 'duration');
 };
 
 
@@ -30,29 +30,36 @@ function generator(array $config) {
     }
 };
 
-$generator = generator($config);
 
-// Function that will be executed each time a future completes,
-// it receives the return values from the task as arguments
-$fulfilled = function (int $task_id, string $ssh_response, float $duration) {
-    echo "Task: $task_id, Response: $ssh_response\n";
-    return compact('task_id', 'ssh_response', 'duration');
-};
+function simulate(array $config, int $concurrency, \closure $task) {
 
-$pool = new Pool(
-    concurrency: $config['concurrency'],
-    task: $task,
-    generator: $generator,
-    fulfilled: $fulfilled
-);
+    //Create generator
+    $generator = generator($config);
 
-$pool->wait();
+    $pool = new Pool(
+        concurrency: $concurrency,
+        task: $task,
+        generator: $generator,
+    );
 
-$requests = $pool->getResponse();
-$requests_count = count($requests);
-echo "$requests_count SSH requests.\n";
-$column = array_column($requests, 'duration');
-$total_duration = array_sum($column);
-$average_request_duration = round($total_duration / $requests_count, 2);
-echo "Average duration: {$average_request_duration}s\n";
-echo "Total duration (without parallelism): " . round($total_duration, 2) . "s\n";
+    $pool->wait();
+
+    $requests = $pool->getValues();
+    $requests_count = count($requests);
+    echo "-------\n";
+    echo "Concurrency: $concurrency\n";
+    echo "$requests_count SSH requests have been run.\n";
+    $column = array_column($requests, 'duration');
+    $total_duration = array_sum($column);
+    $average_request_duration = round($total_duration / $requests_count, 2);
+    echo "Average task duration: {$average_request_duration}s\n";
+    echo "Total duration (without parallelism): " . round($total_duration, 2) . "s\n";
+    $wait_duration = $pool->getWaitDuration();
+    echo "Total duration (real): " . round($wait_duration, 2) . "s\n";
+    echo "Acceleration factor: " . round($total_duration / $wait_duration, 2) . "\n";
+}
+
+simulate($config, 1, $task);
+simulate($config, 5, $task);
+simulate($config, 10, $task);
+simulate($config, 20, $task);

@@ -12,7 +12,7 @@ RUN apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS
 # Install PHP/parallel extension
 # @ref https://pecl.php.net/package/parallel
 # @ref https://github.com/krakjoe/parallel
-RUN pecl install parallel-1.2.2 \
+RUN pecl install parallel-1.2.3 \
   && docker-php-ext-enable parallel
 
 # Install SSH2 extension

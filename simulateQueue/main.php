@@ -45,7 +45,7 @@ function simulate(string $queue_type, array $config) {
                 //$thread is a future, test if task is done
                 if ($future->done()) {
                     // Thread finished task. Get result value.
-                    list($clients_count, $total_duration, $max_wait_duration, $average_wait_duration) = $future->value();
+                    [$clients_count, $total_duration, $max_wait_duration, $average_wait_duration] = $future->value();
                     $results[] = compact('clients_count', 'total_duration', 'max_wait_duration', 'average_wait_duration');
                     // Set thread ready to run again
                     $future = null;
@@ -57,7 +57,7 @@ function simulate(string $queue_type, array $config) {
         include_once __DIR__ . "/Queue.php";
         $queue = new Queue($config['write_log']);
         for ($n = 1; $n <= $config['iterations_count']; $n++) {
-            list($clients_count, $total_duration, $max_wait_duration, $average_wait_duration) = $queue->$queue_type($config);;
+            [$clients_count, $total_duration, $max_wait_duration, $average_wait_duration] = $queue->$queue_type($config);;
             $results[] = compact('clients_count', 'total_duration', 'max_wait_duration', 'average_wait_duration');
         }
     }

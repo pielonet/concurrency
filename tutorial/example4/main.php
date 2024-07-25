@@ -25,7 +25,7 @@ echo("zzz...\n");
 while (!empty($futures)) {
     foreach($futures as $key => $future) {
         if ($future->done()) {
-            list($who, $sleep_time, $status) = $future->value();
+            [$who, $sleep_time, $status] = $future->value();
             echo("$who slept $status $sleep_time seconds". PHP_EOL);
             unset($futures[$key]);
         }

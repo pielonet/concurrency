@@ -25,7 +25,7 @@ echo("zzz...\n");
 while (/* REPLACE ME */) {
     foreach($futures as $key => $future) {
         if (/* REPLACE ME */) {
-            list($who, $sleep_time, $status) = /* REPLACE ME */;
+            [$who, $sleep_time, $status] = /* REPLACE ME */;
             echo("$who slept $status $sleep_time seconds". PHP_EOL);
             unset(/* REPLACE ME */);
         }

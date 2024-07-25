@@ -52,13 +52,15 @@ while (!empty($futures)) {
             continue;
         }
         if ($future->done()) {
-            list($who, $sleep_time, $status, $room) = $future->value();
+            [$who, $sleep_time, $status, $room] = $future->value();
             echo("$who slept $status $sleep_time seconds in $room". PHP_EOL);
 
             // Set future ready for new task
             $future = null;
         }
     }
+    // Destroy last reference
+    unset($future);
 }
 
 

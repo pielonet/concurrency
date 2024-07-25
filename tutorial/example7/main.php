@@ -35,7 +35,7 @@ while (!empty($futures)) {
             // Future is unaffected
             if ($commands->valid()) {
                 // There are still commands to run
-                list($task_id, $command) = $commands->current();
+                [$task_id, $command] = $commands->current();
                 $future = \parallel\run(
                     $task,
                     [$config, $task_id, $command]
@@ -49,11 +49,12 @@ while (!empty($futures)) {
             continue;
         }
         if ($future->done()) {
-            list($task_id, $response) = $future->value();
+            [$task_id, $response] = $future->value();
             echo "Task: $task_id, Response: $response";
 
             // Set future ready for new task
             $future = null;
         }
     }
+    unset($future);
 }

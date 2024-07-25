@@ -24,7 +24,7 @@ $ann_sleep = \parallel\run($sleep, ["Alice", 5, 10, ["well", "disturbed", "horri
 
 echo("zzz...". PHP_EOL);
 
-list($who, $sleep_time, $status) = $ann_sleep->value();
+[$who, $sleep_time, $status] = $ann_sleep->value();
 
 echo("$who slept $status $sleep_time seconds". PHP_EOL);
 

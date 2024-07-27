@@ -22,7 +22,7 @@ $sleep = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time
 $ann_sleep = \parallel\run($sleep, ["Alice", 5, 10, ["well", "disturbed", "horribly"]]);
 
 
-echo("zzz...". PHP_EOL);
+echo "zzz...". PHP_EOL;
 
 [$who, $sleep_time, $status] = $ann_sleep->value();
 

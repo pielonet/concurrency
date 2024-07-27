@@ -2,6 +2,8 @@
 /**
  * SSH the PHP way
  * Parallel SSH with SSH2 extension
+ * 
+ * This example is BUGGY: sometimes nothing gets output
  */
 
 
@@ -15,11 +17,6 @@ $task = function (array $config, int $task_id, string $command) {
     return [$task_id, $response];
 };
 
-// Reserve as many futures as there are rooms
-// Initialize all futures to value "null" which means "unaffected = ready to run task"
-$futures = array_fill(0, $config['concurrency'], null);
-
-
 // Iterate over persons names with a generator
 function generator(int $commands_count, string $command) {
     for ($i=1; $i <= $commands_count; $i++) {
@@ -28,6 +25,10 @@ function generator(int $commands_count, string $command) {
 };
 
 $commands = generator($config['commands_count'], $config['command']);
+
+// Reserve as many futures as there are rooms
+// Initialize all futures to value "null" which means "unaffected = ready to run task"
+$futures = array_fill(0, $config['concurrency'], null);
 
 while (!empty($futures)) {
     foreach($futures as $key => &$future) {
@@ -56,5 +57,6 @@ while (!empty($futures)) {
             $future = null;
         }
     }
+    // Destroy last reference
     unset($future);
 }

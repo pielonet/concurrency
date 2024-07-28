@@ -1,8 +1,8 @@
 <?php
-/* 
+/*
  * Alice and Bob sleep simultaneously
  * Get Future return value as soon as it completes
- * 
+ *
  * public parallel\Future::done(): bool
  * Shall indicate if the task is completed 
  * @ref https://www.php.net/manual/en/parallel-future.done.php
@@ -17,8 +17,8 @@ $sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_
 };
 
 
-$futures[1] = \parallel\run($sleep, ["Alice", 6, 12, ["well", "disturbed", "horribly"]]);
-$futures[2] = \parallel\run($sleep, ["Bob", 5, 10, ["quite well", "thoughtfully", "strangely"]]);
+$futures[0] = \parallel\run($sleep, ["Alice", 6, 12, ["well", "disturbed", "horribly"]]);
+$futures[1] = \parallel\run($sleep, ["Bob", 5, 10, ["quite well", "thoughtfully", "strangely"]]);
 
 echo("zzz...\n");
 

@@ -12,17 +12,17 @@
 \parallel\run(
     function() {
         sleep(5);
-        echo " la mouche";
+        echo " World !";
     }
 );
 
 \parallel\run(
     function() {
         sleep(2);
-        echo "Zobi";
+        echo "Hello";
     }
 );
 
-echo "Bzz ! ";
+echo "zzz... ";
 
-// Result : "Bzz ! Zobi la mouche"
+// Result : "zzz... Hello World !"

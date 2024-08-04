@@ -1,17 +1,17 @@
 <?php
 /**
- * 
+ *
  * Alice is having a snap
  * Future object and return value
- * 
+ *
  * https://www.php.net/manual/en/class.parallel-future.php
- * 
+ *
  * public parallel\Future::value(): mixed
  * Shall return (and if necessary wait for) return from task 
  * @ref https://www.php.net/manual/en/parallel-future.value.php
  */
 
-$sleep = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {
+$task = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {
     $sleep_time = rand($min_sleep_time_seconds, $max_sleep_time_seconds);
     sleep($sleep_time);
     $status_id = array_rand($statuses, 1);
@@ -19,12 +19,13 @@ $sleep = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time
 };
 
 
-$ann_sleep = \parallel\run($sleep, ["Alice", 5, 10, ["well", "disturbed", "horribly"]]);
+$future = \parallel\run($task, ["Alice", 5, 10, ["well", "disturbed", "horribly"]]);
 
 
 echo "zzz...". PHP_EOL;
 
-[$who, $sleep_time, $status] = $ann_sleep->value();
+// Block execution until task finishes and get return value
+[$who, $sleep_time, $status] = $future->value();
 
 echo("$who slept $status $sleep_time seconds". PHP_EOL);
 

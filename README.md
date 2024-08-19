@@ -38,3 +38,4 @@ Each exampleX (where X stands for the number of the example) can be run with the
 - `example6` : "http only !", Parallel download with Guzzle 7
 - `example7` : "SSH the PHP way ! ", Parallel SSH with SSH2 extension
 - `example8` : "generic !", Parallel SSH as exec shell command and generic concurrency class
+- `example9` : "Bzz reloaded!", Run two simple tasks in parallel and synchronize them with a channel

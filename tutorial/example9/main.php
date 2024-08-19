@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Bzz reloaded!
+ * pong...zzz!
  * Run two simple tasks in parallel and synchronize them with a channel
  * 
  * parallel\Channel(int $capacity): Buffered channel

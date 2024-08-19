@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Bzz !
+ * zzz !
  * Run two simple tasks in parallel
  *
  * parallel\run(Closure $task): ?Future

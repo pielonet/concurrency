@@ -30,7 +30,7 @@ Each exampleX (where X stands for the number of the example) can be run with the
 ```
 
 
-- `example1` : "Bzz !", Run two simple tasks in parallel
+- `example1` : "zzz !", Run two simple tasks in parallel
 - `example2` : "Molière !" Run many tasks in parallel with arguments
 - `example3` : "Alice is having a snap !", Future object and return value
 - `example4` : "Alice and Bob sleep simultaneously", Get Future return value as soon as it completes
@@ -38,4 +38,4 @@ Each exampleX (where X stands for the number of the example) can be run with the
 - `example6` : "http only !", Parallel download with Guzzle 7
 - `example7` : "SSH the PHP way ! ", Parallel SSH with SSH2 extension
 - `example8` : "generic !", Parallel SSH as exec shell command and generic concurrency class
-- `example9` : "Bzz reloaded!", Run two simple tasks in parallel and synchronize them with a channel
+- `example9` : "Pong...zzz!", Run two simple tasks in parallel and synchronize them with a channel

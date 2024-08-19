@@ -19,8 +19,10 @@ $channel = new \parallel\Channel(2);
         $snaps_count = rand (8, 12);
         echo "Number of snaps: $snaps_count" . PHP_EOL;
         for ($i=1; $i<=$snaps_count; $i++) {
-            $other_sleep_time = rand(3, 5);
             $my_sleep_time = rand(1, 3);
+            // Second task is slower
+            $other_sleep_time = rand(3, 5);
+
             echo "Send sleep time to buffer" . PHP_EOL;
             $start = microtime(true);
             $channel->send($other_sleep_time);
@@ -28,6 +30,7 @@ $channel = new \parallel\Channel(2);
             if ($wait_time > .1) {
                 echo "Buffer was full. I waited " . round($wait_time) . "s" . PHP_EOL;
             }
+            
             echo "I sleep for {$my_sleep_time}s" . PHP_EOL;
             sleep($my_sleep_time);
         }
@@ -46,7 +49,7 @@ $channel = new \parallel\Channel(2);
                 sleep($my_sleep_time);
             }
         } catch(\parallel\Channel\Error\Closed $e) {
-            echo "Channel is closed. Other die.";
+            echo "Channel is closed. Other dies.";
             die;
         }
     },

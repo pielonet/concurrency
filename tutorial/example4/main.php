@@ -8,7 +8,7 @@
  * @ref https://www.php.net/manual/en/parallel-future.done.php
  */
 
-$sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {
+$task = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {
     $sleep_time = rand($min_sleep_time_seconds, $max_sleep_time_seconds);
     echo("$who goes to sleep". PHP_EOL);
     sleep($sleep_time);
@@ -17,8 +17,8 @@ $sleep = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_
 };
 
 
-$futures[0] = \parallel\run($sleep, ["Alice", 6, 12, ["well", "disturbed", "horribly"]]);
-$futures[1] = \parallel\run($sleep, ["Bob", 5, 10, ["quite well", "thoughtfully", "strangely"]]);
+$futures[0] = \parallel\run($task, ["Alice", 6, 12, ["well", "disturbed", "horribly"]]);
+$futures[1] = \parallel\run($pask, ["Bob", 5, 10, ["quite well", "thoughtfully", "strangely"]]);
 
 echo("zzz...\n");
 

@@ -1,12 +1,8 @@
 <?php
 
 /**
- * pong...zzz!
- * Run two simple tasks in parallel and synchronize them with a channel
+ * Simulate single queue and multiple desks with parallel threads
  * 
- * parallel\Channel(int $capacity): Buffered channel
- * Creates a buffered channel for communication between tasks
- * @ref https://www.php.net/manual/en/class.parallel-channel.php
  */
 
 require_once "config.php";
@@ -79,6 +75,27 @@ while($duration_seconds < $config['office_open_duration_seconds']) {
 }
 
 $main_queue->close();
+
+// waiting until all threads are done
+do {
+    $all_done = array_reduce(
+        $desks,
+        function (bool $c, \parallel\Future $future): bool {
+            return $c && $future->done();
+        },
+        true
+    );
+} while ($all_done === false);
+
+$simulation_duration = round(microtime(true) - $start_time, 2);
+echo "Simulation duration: {$simulation_duration}s\n";
+
+
+
+
+
+
+
 
 
 

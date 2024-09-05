@@ -5,7 +5,10 @@
  */
 
  \parallel\run(function() {
-    \parallel\run(function() {
-        echo "Hello New World" . PHP_EOL;
+    echo "Hello ";
+    $future = \parallel\run(function() {
+        sleep(2);
+        return "New World" . PHP_EOL;
     });
+    echo $future->value();
  });

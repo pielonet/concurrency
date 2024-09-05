@@ -39,3 +39,5 @@ Each exampleX (where X stands for the number of the example) can be run with the
 - `example7` : "SSH the PHP way ! ", Parallel SSH with SSH2 extension
 - `example8` : "generic !", Parallel SSH as exec shell command and generic concurrency class
 - `example9` : "Pong...zzz!", Run two simple tasks in parallel and synchronize them with a channel
+- `example10` : Single queue parallel simulation
+- `example11` : Thread in thread

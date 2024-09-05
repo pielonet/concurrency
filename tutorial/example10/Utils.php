@@ -65,4 +65,26 @@ class Utils {
         }
     }
 
+    private static function computeStats(array $clients) {
+        $clients_count = count($clients);
+        self::logger("Clients count: $clients_count\n");
+        $column = array_column($clients, 'queue_wait_duration');
+        $max_wait_duration = max($column);
+        self::logger("Max wait duration: {$max_wait_duration}s\n");
+        $average_wait_duration = round(array_sum($column) / $clients_count);
+        self::logger("Average wait duration: {$average_wait_duration}s\n");
+
+        return [$clients_count, $time, $max_wait_duration, $average_wait_duration];
+    }
+
+    public static function singleQueueToTxt(array $queue, array $desks) {
+
+        $txt = "== Single queue ==\n";
+        $txt .= "Main queue: " . implode(" ", $queue) . PHP_EOL;
+        foreach ($desks as $desk_id => $client_id) {
+            $txt .= "Desk $desk_id: $client_id" . PHP_EOL;
+        }
+        file_put_contents(__DIR__ . "/out.txt", $txt);
+    }
+
 }

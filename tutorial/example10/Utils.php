@@ -48,7 +48,7 @@ class Utils {
      */
     public static function generateNormalArrivalTimes(int $peak_time_minutes, int $standard_deviation_minutes, int $clients_count_max): array {
         for ($i=1; $i <= $clients_count_max; $i++) {
-            $result[] = round(self::stats_rand_gen_normal($peak_time_minutes*60, $standard_deviation_minutes*60)) . "\n";
+            $result[] = round(self::stats_rand_gen_normal($peak_time_minutes*60, $standard_deviation_minutes*60));
         }
 
         return $result;

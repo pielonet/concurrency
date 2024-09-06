@@ -40,4 +40,6 @@ Each exampleX (where X stands for the number of the example) can be run with the
 - `example8` : "generic !", Parallel SSH as exec shell command and generic concurrency class
 - `example9` : "Pong...zzz!", Run two simple tasks in parallel and synchronize them with a channel
 - `example10` : Single queue parallel simulation
-- `example11` : Thread in thread
+- `example11` : Multiple queues parallel simulation
+- `example12` : Thread in thread
+- `example42` : Benchmark single and multiple queues in parallel

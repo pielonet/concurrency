@@ -87,4 +87,15 @@ class Utils {
         file_put_contents(__DIR__ . "/out.txt", $txt);
     }
 
+    public static function multipleQueueToTxt(array $queues, array $desks) {
+
+        $txt = "== Multiple queues ==\n";
+        foreach ($queues as $queue_id => $client_ids) {
+            $txt .= "Queue $queue_id : " . implode(" ", $client_ids) . PHP_EOL;
+            $client_id = $desks[$queue_id];
+            $txt .= "Desk $queue_id : $client_id"  . PHP_EOL;
+        }
+        file_put_contents(__DIR__ . "/out.txt", $txt);
+    }
+
 }

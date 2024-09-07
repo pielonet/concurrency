@@ -48,7 +48,7 @@ class Pool {
         }
 
         $start_time = microtime(true);
-        // Reserve as many futures as there are rooms
+        // Reserve as many futures as there are parallel threads required
         // Initialize all futures to value "null" which means "unaffected = ready to run task"
         $futures = array_fill(0, $this->concurrency, null);
 
@@ -87,7 +87,7 @@ class Pool {
         $this->values = $values;
     }
 
-    public function getValues() {
+    public function getValues(): array {
         if (!isset($this->values)) {
             throw new \Exception("wait() method must be called first");
         }
@@ -95,7 +95,7 @@ class Pool {
         return $this->values;
     }
 
-    public function getWaitDuration() {
+    public function getWaitDuration(): float {
         if (!isset($this->wait_duration)) {
             throw new \Exception("wait() method must be called first");
         }

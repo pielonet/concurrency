@@ -23,7 +23,6 @@ class Utils {
         return $result;
     }
 
-
     /**
      * "Box–Muller transform" based random deviate generator.
      *
@@ -58,36 +57,17 @@ class Utils {
         if (self::$config['write_log']) echo $text;
     }
 
-    public static function sleep(float $start_time, int $duration_seconds_start, int $duration_seconds) {
-        $duration = $duration_seconds_start;
-        while($duration < ($duration_seconds_start + $duration_seconds)) {
-            $duration = (microtime(true) - $start_time) * self::$config['time_acceleration_factor'];
-        }
-    }
-
-    private static function computeStats(array $clients) {
-        $clients_count = count($clients);
-        self::logger("Clients count: $clients_count\n");
-        $column = array_column($clients, 'queue_wait_duration');
-        $max_wait_duration = max($column);
-        self::logger("Max wait duration: {$max_wait_duration}s\n");
-        $average_wait_duration = round(array_sum($column) / $clients_count);
-        self::logger("Average wait duration: {$average_wait_duration}s\n");
-
-        return [$clients_count, $time, $max_wait_duration, $average_wait_duration];
-    }
-
-    public static function singleQueueToTxt(array $queue, array $desks) {
+    public static function singleQueueToTxt(array $queue, array $desks, string $directory) {
 
         $txt = "== Single queue ==\n";
         $txt .= "Main queue: " . implode(" ", $queue) . PHP_EOL;
         foreach ($desks as $desk_id => $client_id) {
             $txt .= "Desk $desk_id: $client_id" . PHP_EOL;
         }
-        file_put_contents(__DIR__ . "/out.txt", $txt);
+        file_put_contents($directory . "/out.txt", $txt);
     }
 
-    public static function multipleQueueToTxt(array $queues, array $desks) {
+    public static function multipleQueueToTxt(array $queues, array $desks, string $directory) {
 
         $txt = "== Multiple queues ==\n";
         foreach ($queues as $queue_id => $client_ids) {
@@ -95,7 +75,7 @@ class Utils {
             $client_id = $desks[$queue_id];
             $txt .= "Desk $queue_id : $client_id"  . PHP_EOL;
         }
-        file_put_contents(__DIR__ . "/out.txt", $txt);
+        file_put_contents($directory . "/out.txt", $txt);
     }
 
 }

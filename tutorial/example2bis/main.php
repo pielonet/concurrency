@@ -2,6 +2,7 @@
 
 /**
  * Playing with the functional API
+ * Warning with cached runtimes : they share the same global scope !!
  */
 
 $fun = function() {
@@ -15,3 +16,5 @@ $fun = function() {
 for ($i = 0; $i < 100; $i++) {
     \parallel\run($fun);
 }
+
+// Results are unpredictable !

@@ -17,8 +17,8 @@ $task = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_s
 };
 
 
-$futures[0] = \parallel\run($task, ["Alice", 6, 12, ["well", "disturbed", "horribly"]]);
-$futures[1] = \parallel\run($pask, ["Bob", 5, 10, ["quite well", "thoughtfully", "strangely"]]);
+$futures[0] = (new \parallel\Runtime())->run($task, ["Alice", 6, 12, ["well", "disturbed", "horribly"]]);
+$futures[1] = (new \parallel\Runtime())->run($task, ["Bob", 5, 10, ["quite well", "thoughtfully", "strangely"]]);
 
 echo("zzz...\n");
 

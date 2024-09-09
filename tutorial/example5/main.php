@@ -4,6 +4,8 @@
  * Launch tasks in parallel in a limited number of threads and wait for them to complete
  */
 
+use \parallel\Runtime;
+
 include_once("config.php");
 
 // Function that will be executed in each future (task)
@@ -39,7 +41,7 @@ while (!empty($futures)) {
             if ($names->valid()) {
                 // There are still persons available : put someone to sleep
                 $name = $names->current();
-                $future = \parallel\run(
+                $future = (new Runtime())->run(
                     $task,
                     [$name, $config['min_sleep_time_seconds'], $config['max_sleep_time_seconds'], $config['statuses'], $config['rooms'][$key]]
                 );

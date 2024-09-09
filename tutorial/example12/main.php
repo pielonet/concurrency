@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Run thread in thread
+ * Open a new thread from a secondary thread
  */
 
- \parallel\run(function() {
+ (new \parallel\Runtime())->run(function() {
     echo "Hello ";
-    $future = \parallel\run(function() {
+    $future = (new \parallel\Runtime())->run(function() {
         sleep(2);
         return "New World" . PHP_EOL;
     });

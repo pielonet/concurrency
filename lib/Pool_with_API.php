@@ -48,7 +48,7 @@ class Pool {
 
         //Return error if wait was already called
         if (isset($this->values)) {
-            throw new \Exception("wait() method can only be called once");
+            return $this->values();
         }
 
         // Reserve as many futures as there are parallel threads required

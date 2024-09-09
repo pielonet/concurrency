@@ -5,13 +5,12 @@
  * 
  * This example is BUGGY: sometimes nothing gets output
  */
-
-
 include_once('config.php');
+
+\parallel\bootstrap(__DIR__ . '/bootstrap.php');
 
 // Function that will be executed in each future (task)
 $task = function (array $config, int $task_id, string $command) {
-    include_once('SSH2.php');
     $ssh_connection = new SSH2($config);
     $response = $ssh_connection->exec($command);
     return [$task_id, $response];

@@ -20,7 +20,7 @@ $queue_channel = new Channel(Channel::Infinite);
 $controller_channel = new Channel(Channel::Infinite);
 
 // Launch controller in a parallel thread
-$controller = \parallel\run(
+$controller = (new \parallel\Runtime())->run(
     function(Channel $controller_channel, Channel $queue_channel, array $config): array {
 
         require_once "Utils.php";
@@ -83,7 +83,7 @@ $controller = \parallel\run(
 
 // Launch desks in parallel threads
 for ($desk_id = 0; $desk_id < $config['desks_count']; $desk_id++ ) {
-    $desks[] = \parallel\run(
+    $desks[] = (new \parallel\Runtime())->run(
         function (int $desk_id, Channel $queue, Channel $controller_channel, array $config): void {
             try {
                 while(true) {

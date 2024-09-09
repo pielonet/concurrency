@@ -9,12 +9,15 @@
  * @ref https://www.php.net/manual/en/class.parallel-channel.php
  */
 
- echo "zzz... " . PHP_EOL;
+use \parallel\Runtime;
+
+echo "zzz... " . PHP_EOL;
 
 // Create new buffered channel
 $channel = new \parallel\Channel(2);
 
-\parallel\run(
+$runtime1 = new Runtime();
+$runtime1->run(
     function($channel) {
         $snaps_count = rand (8, 12);
         echo "Number of snaps: $snaps_count" . PHP_EOL;
@@ -39,7 +42,8 @@ $channel = new \parallel\Channel(2);
     [$channel]
 );
 
-\parallel\run(
+$runtime2 = new Runtime();
+$runtime2->run(
     function($channel) {
         try {
             while(true) {

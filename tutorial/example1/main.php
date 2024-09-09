@@ -9,14 +9,16 @@
  * @ref https://www.php.net/manual/en/parallel.run.php
  */
 
-\parallel\run(
+$runtime1 = new \parallel\Runtime();
+$runtime1->run(
     function() {
         sleep(5);
         echo " World !";
     }
 );
 
-\parallel\run(
+$runtime2 = new \parallel\Runtime();
+$runtime2->run(
     function() {
         sleep(2);
         echo "Hello";

@@ -11,6 +11,8 @@
  * @ref https://www.php.net/manual/en/parallel-future.value.php
  */
 
+use \parallel\Runtime;
+
 $task = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {
     $sleep_time = rand($min_sleep_time_seconds, $max_sleep_time_seconds);
     sleep($sleep_time);
@@ -19,7 +21,7 @@ $task = function (string $who, int $min_sleep_time_seconds, int $max_sleep_time_
 };
 
 
-$future = \parallel\run($task, ["Alice", 5, 10, ["well", "disturbed", "horribly"]]);
+$future = (new Runtime())->run($task, ["Alice", 5, 10, ["well", "disturbed", "horribly"]]);
 
 
 echo "zzz...". PHP_EOL;

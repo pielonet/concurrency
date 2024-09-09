@@ -2,11 +2,23 @@
 
 /**
  * zzz !
- * Run two simple tasks in parallel
+ * Run two simple tasks in two parallel threads
  *
- * parallel\run(Closure $task): ?Future
- * Shall schedule task for execution in parallel.
- * @ref https://www.php.net/manual/en/parallel.run.php
+ */
+// final class parallel\Runtime {
+//     /* Create */
+//     public __construct()
+//     public __construct(string $bootstrap)
+//     /* Execute */
+//     public run(Closure $task): ?Future
+//     public run(Closure $task, array $argv): ?Future
+//     /* Join */
+//     public close(): void
+//     public kill(): void
+// }
+ /**
+ * The \parallel\Runtime class
+ * @ref https://www.php.net/manual/en/class.parallel-runtime.php
  */
 
 $runtime1 = new \parallel\Runtime();
@@ -26,5 +38,8 @@ $runtime2->run(
 );
 
 echo "zzz... ";
+
+$runtime1->close();
+$runtime2->close();
 
 // Result : "zzz... Hello World !"

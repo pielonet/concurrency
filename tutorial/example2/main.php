@@ -25,7 +25,7 @@ $words = explode(" ", $sentence);
 foreach($words as $word) {
     \parallel\run(
         function(string $word) {
-            usleep(rand(1, 10000000));
+            sleep(rand(1, 10));
             echo "$word ";
         },
         [$word]

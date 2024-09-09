@@ -2,7 +2,7 @@
 
 /**
  * Playing with runtimes
- * Tasks scheduled in the same runtime share the same global scope
+ * Tasks scheduled in the same runtime ar run FIFO and share the same global scope
  */
 
 $fun = function() {

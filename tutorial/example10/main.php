@@ -5,15 +5,14 @@
  * 
  */
 
+use \parallel\Channel;
+
 if (! isset($config)) {
-    require_once "config.php";
+    require "config.php";
  }
 
 require_once "Utils.php";
-
 Utils::setConfig($config);
-
-use \parallel\Channel;
 
 // Create buffered channel for the single queue
 $queue_channel = new Channel(Channel::Infinite);
@@ -25,7 +24,6 @@ $controller = \parallel\run(
     function(Channel $controller_channel, Channel $queue_channel, array $config): array {
 
         require_once "Utils.php";
-
         Utils::setConfig($config);
 
         $clients = [];

@@ -34,9 +34,9 @@ foreach ($tasks as $name => $task) {
         generator: $generator,
     );
 
-    $pool->wait();
-
-    $results = $pool->getValues();
+    $start_time = microtime(true);
+    $results = $pool->values();
+    $duration = microtime(true) - $start_time;
 
     echo "== $name ==\n";
     $count = count($results);
@@ -57,9 +57,8 @@ foreach ($tasks as $name => $task) {
     $average_average = round(array_sum($column) / $count);
     echo "Average average wait duration: {$average_average}s\n";
 
-    $simulation_duration = round($pool->getWaitDuration(), 1);
+    $simulation_duration = round($duration, 1);
     echo "Simulation duration: {$simulation_duration}s\n";
     echo "\n";
-
 }
 

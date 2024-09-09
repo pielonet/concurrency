@@ -5,7 +5,9 @@ FROM php:8.3-zts-alpine
 # @ref https://github.com/mlocati/docker-php-extension-installer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions parallel-1.2.3 ssh2-1.4.1 @composer
+RUN install-php-extensions parallel-1.2.4 ssh2-1.4.1 @composer
+
+RUN cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" 
 
 # accept the arguments from build-args
 ARG PUID 

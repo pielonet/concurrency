@@ -2,8 +2,6 @@
 
 namespace Concurrency;
 
-use \parallel\Runtime;
-
 class Pool {
     /**
      * Max number of concurrent threads
@@ -36,31 +34,27 @@ class Pool {
      */
     private array $values;
 
-    public function __construct(\Closure $task, \Generator $generator, int $concurrency = 5 , string $bootstrap = "") {
+    public function __construct(\Closure $task, \Generator $generator, int $concurrency = 5, string $bootstrap = "") {
         //Populate private variables
         $this->concurrency = $concurrency;
         $this->task = $task;
         $this->generator = $generator;
-        $this->bootstrap = $bootstrap;
+        if ($bootstrap != "") {
+            \parallel\bootstrap($bootstrap);
+        }
     }
 
-    /**
-     * Launch pool and return an array containing
-     * all returned values from each single task
-     * 
-     * @return array $values
-     */
     public function values() : array {
 
-        // Directly return values if method was already called
+        //Return error if wait was already called
         if (isset($this->values)) {
-            return $this->values;
+            throw new \Exception("wait() method can only be called once");
         }
 
         // Reserve as many futures as there are parallel threads required
-        // Initialize all futures to value null which means "unaffected = ready to run task"
+        // Initialize all futures to value "null" which means "unaffected = ready to run task"
         $futures = array_fill(0, $this->concurrency, null);
-        
+
         while (!empty($futures)) {
             foreach($futures as $key => &$future) {
                 if (is_null($future)) {
@@ -72,29 +66,20 @@ class Pool {
                         if (! is_array($task_parameter)) {
                             throw new \Exception("Invalid generator return value. Generator return value must be of type array");
                         }
-                        if ($this->bootstrap != "") {
-                            $runtimes[$key] = new Runtime($this->bootstrap);
-                        } else {
-                            $runtimes[$key] = new Runtime();
-                        }
-                        $future = $runtimes[$key]->run($this->task, $task_parameter);
+                        $future = \parallel\run($this->task, $task_parameter);
                         $this->generator->next();
                         continue;
                     }
 
-                    // No more tasks to perform, destroy future and close runtime
+                    // No more tasks to perform, destroy future
                     unset($futures[$key]);
-
                     continue;
                 }
-
                 if ($future->done()) {
-                    // Future has run its task, retrieve return value
                     $values[] = $future->value();
 
-                    // Set future ready for new task and close thread
+                    // Set future ready for new task
                     $future = null;
-                    $runtimes[$key]->close();
                 }
             }
             // Destroy the last reference
@@ -104,4 +89,5 @@ class Pool {
         $this->values = $values;
         return $values;
     }
+
 }

@@ -2,7 +2,7 @@
 FROM dunglas/frankenphp
 
 # Install extensions
-RUN install-php-extensions parallel-1.2.3 ssh2-1.4.1 @composer
+RUN install-php-extensions parallel-1.2.4 ssh2-1.4.1 @composer
 
 # accept the arguments from build-args
 ARG PUID 

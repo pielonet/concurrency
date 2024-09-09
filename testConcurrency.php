@@ -77,7 +77,9 @@ $pool = new Pool(
     generator: $generator
 );
 
-$pool->wait();
+$values = $pool->values();
+
+print_r($values);
 
 
 

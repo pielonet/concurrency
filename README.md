@@ -1,5 +1,5 @@
 # concurrency
-Parallel processing and waiting queue simulations
+PHP parallel programming tutorial and examples using php/parallel extension
 
 - PHP/parallel optimized run examples (runs mostly the same as Guzzle/HTTP promises https://docs.guzzlephp.org/en/stable/quickstart.html#concurrent-requests)
 - Comparison between single and multiple waiting queues (at post office...)
@@ -7,11 +7,8 @@ Parallel processing and waiting queue simulations
 ## How to run
 
 - Install Docker
-- Build concurrency php container
-```
-docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) .
-```
-- Run a script e.g simulateQueue.php
+
+- Run a script e.g simulateQueue.php (may take much time on the first run since the Docker container is being build)
 ```bash
 ./run.sh simulateQueue/main.php
 ```

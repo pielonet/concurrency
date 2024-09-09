@@ -42,9 +42,10 @@ function simulate(array $config, int $concurrency, \closure $task) {
         generator: $generator,
     );
 
-    $pool->wait();
+    $start_time = microtime(true);
+    $requests = $pool->values();
+    $duration = microtime(true) - $start_time;
 
-    $requests = $pool->getValues();
     $requests_count = count($requests);
     echo "-------\n";
     echo "Concurrency: $concurrency\n";
@@ -54,9 +55,8 @@ function simulate(array $config, int $concurrency, \closure $task) {
     $average_request_duration = round($total_duration / $requests_count, 2);
     echo "Average task duration: {$average_request_duration}s\n";
     echo "Total duration (without parallelism): " . round($total_duration, 2) . "s\n";
-    $wait_duration = $pool->getWaitDuration();
-    echo "Total duration (real): " . round($wait_duration, 2) . "s\n";
-    echo "Acceleration factor: " . round($total_duration / $wait_duration, 2) . "\n";
+    echo "Total duration (real): " . round($duration, 2) . "s\n";
+    echo "Acceleration factor: " . round($total_duration / $duration, 2) . "\n";
 }
 
 simulate($config, 1, $task);

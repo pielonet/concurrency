@@ -15,7 +15,8 @@ PHP parallel programming tutorial and examples using php/parallel extension
 
 ### Scripts
 
-- `simulateQueue` : compare single and multiple queues average and max waiting time
+- `simulateQueue` : compare single and multiple queues average and max waiting time. The queues are implemented as sequential programs. Multiple simulations ar run in parallel.
+- `lib/Pool.php` : a simple "Pool" class to run any number of tasks in parallel with a defined concurrency. Can be reused in any project !
 
 ### Tutorial
 

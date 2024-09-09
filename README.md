@@ -13,6 +13,10 @@ PHP parallel programming tutorial and examples using php/parallel extension
 ./run.sh simulateQueue/main.php
 ```
 
+Command options :
+- --image=[official|frankenphp] Whether to use the offical PHP Docker image or that of FrankenPHP project. Defaults to "official"
+- --docker-options="<Docker-options>" Set specific Docker/run options. Useful to control CPU or memory use by Docker. Defaults to "--cpus=2.0".
+
 ### Scripts
 
 - `simulateQueue` : compare single and multiple queues average and max waiting time. The queues are implemented as sequential programs. Multiple simulations ar run in parallel.

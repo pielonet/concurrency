@@ -13,7 +13,7 @@ $fun = function() {
     echo "counter is at " . $GLOBALS['counter'] . PHP_EOL;
 };
 
-for ($i = 0; $i < 100; $i++) {
+for ($i = 0; $i < 20; $i++) {
     \parallel\run($fun);
 }
 

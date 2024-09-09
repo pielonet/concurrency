@@ -11,7 +11,12 @@ require "Pool.php";
 
 $task = function(array $config): array {
     echo "*";
-    return require "singleQueue.php";
+    sleep(1);
+    require "singleQueue.php";
+    sleep(1);
+    echo "#";
+    sleep(1);
+    return $statistics;
 };
 
 function generator(array $config) {

@@ -22,7 +22,7 @@ elif [[ "$runtime" = "frankenphp" ]]; then
     docker build --quiet --tag frankenphp:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/frankenphp
     time docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/public frankenphp:concurrency frankenphp php-cli /app/public/$script_path  | tee out.log
     #docker container rm -f franken-concurrency
-    #docker run  --name franken-concurrency -v $(pwd):/app/public -p 8080:80 -p 8443:443 -p 8443:443/udp frankenphp:concurrency
+    #docker run  --name franken-concurrency "$docker_options" -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/public -p 8080:80 -p 8443:443 -p 8443:443/udp frankenphp:concurrency
     #sleep 2
     #time curl -k https://localhost:8443/$script_path
 fi

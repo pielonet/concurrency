@@ -14,9 +14,12 @@ PHP parallel programming tutorial and examples using php/parallel extension
 ```
 
 Command options :
-- -b                        Builds container. This option MUST be used on first run ! It is optional afterwards.
-- -r [official|frankenphp]  Whether to use the offical PHP Docker image or that of FrankenPHP project. Defaults to "official"
-- -d "<Docker-options>"     Set specific Docker/run options. Useful to control CPU or memory use by Docker. Defaults to "--cpus=2.0".
+- -b 
+    Builds container. This option MUST be used on first run ! It is optional afterwards.
+- -r [official|frankenphp]
+     Whether to use the offical PHP Docker image or that of FrankenPHP project. Defaults to "official"
+- -d `<Docker-options>`
+    Set specific Docker/run options. Useful to control CPU or memory use by Docker. Defaults to "--cpus=2.0".
 
 ### Scripts
 

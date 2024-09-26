@@ -1,8 +1,8 @@
 <?php
 /**
  * 
- * Alice and Bob are hungry : Launch one parallel task
- *  with the given task and get its return values.
+ * Alice and Bob are hungry : Launch two parallel tasks
+ *  with the given task and get their return values.
  * 
  * https://www.php.net/manual/en/class.parallel-future.php
  * 
@@ -20,6 +20,8 @@ $task = function (string $who, int $min_eat_time_seconds, int $max_eat_time_seco
     return [$who, $eat_time, $courses[$course_id]];
 };
 
+$future = \parallel\run($task, ['Jean', 3, 5, $courses]);
 
+[$who, $duration, $what] = $future->value();
 
-
+echo "$who ate $what for $duration minutes";

@@ -8,7 +8,13 @@
  * @ref https://www.php.net/manual/en/parallel.run.php
  */
 
-function task (string $message, int $sleep_time) {
+$task = function (string $message, int $sleep_time) {
     sleep($sleep_time);
     echo "$message\n";
+};
+
+$data = [["Hello", 1], ["Halo", 3], ["Hej", 2]];
+
+foreach ($data as $datum) {
+    \parallel\run($task, $datum);
 }

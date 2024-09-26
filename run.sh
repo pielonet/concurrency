@@ -4,8 +4,8 @@ function usage {
        printf "Usage: ./run.sh <options> <relative_script_path>\n"
        printf "Options:\n"
        printf " -h                               Display this help message.\n"
-       printf " -b                               Builds parallel container.\n"
-       printf " -d <docker_options>              Specify Docker options. Defaults to '--cpus=2.0'.\n"
+       printf " -b                               Builds parallel container. MUST be used on first run.\n"
+       printf " -d <docker_options>              Set specific Docker/run options. Useful to control CPU or memory use by Docker. Defaults to '--cpus=2.0'.\n"
        printf " -r [official|frankenphp]         Specify which container to use. Defaults to official.\n"
        exit 1
 }

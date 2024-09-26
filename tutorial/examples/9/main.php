@@ -14,11 +14,10 @@ $channel = new \parallel\Channel(1);
 
 \parallel\run(
     function($channel) {
-        $channel->send(2);
+        $channel->send("there");
         sleep(1);
-        $my_sleep_time = $channel->recv();
-        sleep($my_sleep_time);
-        echo "here";
+        $message = $channel->recv();
+        echo $message;
         $channel->close();
     },
     [$channel]
@@ -26,10 +25,10 @@ $channel = new \parallel\Channel(1);
 
 \parallel\run(
     function($channel) {
-        $my_sleep_time = $channel->recv();
-        sleep($my_sleep_time);
-        echo "there";
-        $channel->send(1);
+        $message = $channel->recv();
+        echo $message;
+        sleep(2);
+        $channel->send("here");
     },
     [$channel]
 );
@@ -38,8 +37,8 @@ $channel = new \parallel\Channel(1);
 echo "zzz";
 
 for ($i=1; $i<=5; $i++) {
-    sleep(1);
     echo ".";
+    sleep(1);   
 }
 
-// Result : zzz.there.here...
+// Result : zzz.there..here..

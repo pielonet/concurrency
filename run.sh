@@ -1,29 +1,66 @@
 #!/bin/bash
 
-usage='
-Usage
------
-./run.sh <relative_script_path> [runtime] [docker_options]
-'
+function usage {
+       printf "Usage: ./run.sh <options> <relative_script_path>\n"
+       printf "Options:\n"
+       printf " -h                               Display this help message.\n"
+       printf " -b                               Builds parallel container.\n"
+       printf " -d <docker_options>              Specify Docker options. Defaults to '--cpus=2.0'.\n"
+       printf " -r [official|frankenphp]         Specify which container to use. Defaults to official.\n"
+       exit 1
+}
+
+while getopts "hbd:r:" opt; do
+    case "${opt}" in
+        h)
+            usage
+            ;;
+
+        b)
+            build=true
+            ;;
+
+        d)
+            docker_options=${OPTARG}
+            ;;
+
+        r)
+            r=${OPTARG}
+            [[ $r = "official" || $r = "frankenphp" ]] || { echo "Invalid runtime argument $r"; usage; }
+            runtime=$r
+            ;;
+
+        *)
+            printf "Invalid Option: $1.\n"
+            usage
+            ;;
+    esac
+done
+
+shift $((OPTIND-1))
 
 script_path=$1
 
-[[ -z $2 ]] && runtime=official || runtime=$2
+[[ -z $runtime ]] && runtime=official
 
-[[ -z $3 ]] && docker_options='--cpus=2.0' || docker_options=$3
+[[ -z $docker_options ]] && docker_options='--cpus=2.0'
 
-[[ -f "./$script_path" ]] || { echo "Error: file does not exist"; echo "$usage"; exit 1; }
+[[ -f "./$script_path" ]] || { echo "Error: file does not exist"; usage; }
+
+[[ -z "$2" ]] || { echo "Too many arguments"; usage; }
 
 
 if [[ "$runtime" = "official" ]]; then
-    docker build --quiet --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/official
-    time docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/ php:concurrency php /app/$script_path | tee out.log
+    [[ "$build" = "true" ]] && docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/official
+    docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/ php:concurrency php /app/$script_path | tee out.log
 elif [[ "$runtime" = "frankenphp" ]]; then
-    docker build --quiet --tag frankenphp:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/frankenphp
-    time docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/public frankenphp:concurrency frankenphp php-cli /app/public/$script_path  | tee out.log
+    [[ "$build" = "true" ]] && docker build --tag frankenphp:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/frankenphp
+    docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/public frankenphp:concurrency frankenphp php-cli /app/public/$script_path  | tee out.log
     #docker container rm -f franken-concurrency
     #docker run  --name franken-concurrency "$docker_options" -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/public -p 8080:80 -p 8443:443 -p 8443:443/udp frankenphp:concurrency
     #sleep 2
-    #time curl -k https://localhost:8443/$script_path
+    #curl -k https://localhost:8443/$script_path
 fi
+
+echo
 

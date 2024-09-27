@@ -9,12 +9,12 @@ use Concurrency\Pool;
 require "config.php";
 require __DIR__ . "/../../../lib/Pool.php";
 
-$tasks['singleQueue'] = function(array $config): array {
-    return require "singleQueue.php";
-};
-
 $tasks['multipleQueues'] = function(array $config): array {
     return require "multipleQueues.php";
+};
+
+$tasks['singleQueue'] = function(array $config): array {
+    return require "singleQueue.php";
 };
 
 function generator(array $config) {
@@ -22,6 +22,8 @@ function generator(array $config) {
         yield [$config];
     }
 }
+
+print_r($config);
 
 foreach ($tasks as $name => $task) {
 

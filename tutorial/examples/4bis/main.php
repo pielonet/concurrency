@@ -3,9 +3,6 @@
  * Alice and Bob sleep simultaneously
  * Get Future return value as soon as it completes
  *
- * public parallel\Future::done(): bool
- * Shall indicate if the task is completed 
- * @ref https://www.php.net/manual/en/parallel-future.done.php
  */
 
 $task = function(string $who, int $min_sleep_time_seconds, int $max_sleep_time_seconds, array $statuses) {

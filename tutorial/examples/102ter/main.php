@@ -2,7 +2,7 @@
 /**
  * Fibonacci
  * Mimics the Go "select" statement with event-loop
- * Variant with blocking loop and foreach($events as $event)
+ * Variant with blocking loop and $events->poll()
  * 
  * Adapted from https://go.dev/tour/concurrency/5
  */
@@ -19,9 +19,9 @@ function fibonacci (Channel $channel, Channel $quit) {
     $input = new Input();
     $input->add('fibonacci', $x);
     $events->setInput($input);
+    $events->setBlocking(true);
 
-    foreach ($events as $event) {
-
+    while ($event = $events->poll()) {
         switch ($event->source) {
             case 'fibonacci':
                 if ($event->type == Event\Type::Write) {
@@ -41,6 +41,7 @@ function fibonacci (Channel $channel, Channel $quit) {
                 return;
         }
     }
+
 }
 
 $channel = Channel::make('fibonacci', 1);

@@ -30,6 +30,7 @@ function fibonacci (Channel $channel, Channel $quit) {
                         $x = $y;
                         $y += $c;
 
+                        // Channel and Input got removed, add them again
                         $events->addChannel($channel);
                         $input->add('fibonacci', $x);
                         $events->setInput($input);

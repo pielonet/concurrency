@@ -10,13 +10,13 @@ PHP parallel programming tutorial and examples using php/parallel extension
 
 - Run a script e.g simulateQueue.php (may take much time on the first run since the Docker container is being build)
 ```bash
-./run.sh simulateQueue/main.php
+./run.sh -b simulateQueue/main.php
 ```
 
 Command options :
 - -b 
     Builds container. This option MUST be used on first run ! It is optional afterwards.
-- -r [official|frankenphp]
+- -i [official|frankenphp]
      Whether to use the offical PHP Docker image or that of FrankenPHP project. Defaults to "official"
 - -d `<Docker-options>`
     Set specific Docker/run options. Useful to control CPU or memory use by Docker. Defaults to "--cpus=2.0".
@@ -30,9 +30,9 @@ Command options :
 
 Example are ordered by difficulty, starting with very easy examples.
 
-Each exampleX (where X stands for the number of the example) can be run with the following command :
+Each examples/X (where X stands for the number of the example) can be run with the following command :
 ```bash
-./run.sh tutorial/example/X/main.php
+./run.sh -b tutorial/example/X/main.php
 ```
 
 
@@ -49,3 +49,15 @@ Each exampleX (where X stands for the number of the example) can be run with the
 - `11` : Multiple queues parallel simulation
 - `12` : Thread in thread
 - `42` : Benchmark single and multiple queues in parallel
+
+## Utils
+
+- Get number of threads for your process
+```bash
+ps -o thcount <pid>
+```
+
+- Monitor context switches per second : watch "cs" value
+```bash
+vmstat 1
+```

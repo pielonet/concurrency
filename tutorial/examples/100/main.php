@@ -10,11 +10,10 @@ use \parallel\Channel;
 
  $source1 = \parallel\run(function($channel) {
     for ($i=1; $i <=10; $i++) {
-        sleep(2);
+        sleep(1);
         $channel->send(random_int(0,1000));
     }
-    $channel->close();
-
+    $channel->send(false);
  }, [$channel1]);
 
  $source2 = \parallel\run(function($channel) {
@@ -22,16 +21,13 @@ use \parallel\Channel;
         sleep(2);
         $channel->send(random_int(0,1000));
     }
-    $channel->close();
+    $channel->send(false);
  }, [$channel2]);
 
 while(true) {
-    try {
-        $value1 = $channel1->recv();
-        $value2 = $channel2->recv();
-        echo ($value1 + $value2) . PHP_EOL;
-    } catch (\parallel\Channel\Error\Closed $e) {
-        echo $e->getMessage() . PHP_EOL;
-        break;
-    }
+    $value1 = $channel1->recv();
+    if ($value1 === false) break;
+    $value2 = $channel2->recv();
+    if ($value2 == false) break;
+    echo ($value1 + $value2) . PHP_EOL;
 }

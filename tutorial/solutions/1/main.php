@@ -2,24 +2,45 @@
 
 /**
  * Exercise 1
- * Launch two parallel tasks.
- *  Second task must always complete
- *  before the first one.
+ * Fetch a URL in the main thread
+ * Launch a parallel task to fetch a second URL in parallel with the main thread
+ * Compare execution time with the a "classic" sequential processing
  * 
  * Hint : 
  * \parallel\run(Closure $task): ?Future
  * Shall schedule task for execution in parallel.
  * @ref https://www.php.net/manual/en/parallel.run.php
  * 
- * Solution : see example/1/main.php
  */
 
-\parallel\run(function() {
-    sleep(3);
-    echo "first\n";
-});
+$urls = ["https://afup.org", "https://www.php.net"];
 
-\parallel\run(function() {
-    sleep(1);
-    echo "second\n";
-});
+echo "Sequential processing -> ";
+
+$start_time = microtime(true);
+
+$html = file_get_contents($urls[0]);
+$html = file_get_contents($urls[1]);
+
+echo "Duration: " . microtime(true) - $start_time . PHP_EOL;
+
+// --------------------------------------
+
+echo "Parallel processing -> ";
+
+$start_time = microtime(true);
+
+$future = \parallel\run(function($url) {
+    return file_get_contents($url);
+}, [$urls[1]]);
+
+$html = file_get_contents($urls[0]);
+
+$html = $future->value();
+
+echo "Duration: " . microtime(true) - $start_time . PHP_EOL;
+
+
+
+
+

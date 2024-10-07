@@ -6,11 +6,11 @@ function usage {
        printf " -h                               Display this help message.\n"
        printf " -b                               Builds parallel container. MUST be used on first run.\n"
        printf " -d <docker_options>              Set specific Docker/run options. Useful to control CPU or memory use by Docker. Defaults to '--cpus=2.0'.\n"
-       printf " -r [official|frankenphp]         Specify which container to use. Defaults to official.\n"
+       printf " -i [official|frankenphp]         Specify which Docker image to use. Defaults to official.\n"
        exit 1
 }
 
-while getopts "hbd:r:" opt; do
+while getopts "hbd:i:" opt; do
     case "${opt}" in
         h)
             usage
@@ -24,10 +24,10 @@ while getopts "hbd:r:" opt; do
             docker_options=${OPTARG}
             ;;
 
-        r)
-            r=${OPTARG}
-            [[ $r = "official" || $r = "frankenphp" ]] || { echo "Invalid runtime argument $r"; usage; }
-            runtime=$r
+        i)
+            i=${OPTARG}
+            [[ $i = "official" || $i = "frankenphp" ]] || { echo "Invalid runtime argument $i"; usage; }
+            image=$i
             ;;
 
         *)
@@ -41,7 +41,7 @@ shift $((OPTIND-1))
 
 script_path=$1
 
-[[ -z $runtime ]] && runtime=official
+[[ -z $image ]] && image=official
 
 [[ -z $docker_options ]] && docker_options='--cpus=2.0'
 
@@ -50,10 +50,10 @@ script_path=$1
 [[ -z "$2" ]] || { echo "Too many arguments"; usage; }
 
 
-if [[ "$runtime" = "official" ]]; then
+if [[ "$image" = "official" ]]; then
     [[ "$build" = "true" ]] && docker build --tag php:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/official
     docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/ php:concurrency php /app/$script_path | tee out.log
-elif [[ "$runtime" = "frankenphp" ]]; then
+elif [[ "$image" = "frankenphp" ]]; then
     [[ "$build" = "true" ]] && docker build --tag frankenphp:concurrency --build-arg PUID=$(id -u) --build-arg PGID=$(id -g) --build-arg USER=$(id -un) ./Dockerfiles/frankenphp
     docker run "$docker_options" --rm -v ./php-ini-overrides.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini -v $(pwd):/app/public frankenphp:concurrency frankenphp php-cli /app/public/$script_path  | tee out.log
     #docker container rm -f franken-concurrency

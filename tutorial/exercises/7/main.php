@@ -3,7 +3,7 @@
  * Simulate single queue
  * and calculate accelerated time
  * 
- * Find the right caculation for the simulated time
+ * Find the right caculation for the simulated duration
  */
 
 

@@ -27,7 +27,7 @@ while (/* REPLACE ME */) {
         if (/* REPLACE ME */) {
             [$who, $sleep_time, $status] = /* REPLACE ME */;
             echo("$who slept $status $sleep_time seconds". PHP_EOL);
-            unset(/* REPLACE ME */);
+            unset($futures[$key]);
         }
     }
 }

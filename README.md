@@ -49,6 +49,9 @@ Each examples/X (where X stands for the number of the example) can be run with t
 - `11` : Multiple queues parallel simulation
 - `12` : Thread in thread
 - `42` : Benchmark single and multiple queues in parallel
+- `100` : Data-flow : create an adder waiting from two parallel channels to make an addition
+- `101` : Prime sieve with daisy-chain filter processes
+- `102` : Fibonacci : Mimics the Go "select" statement with event-loop
 
 ## Utils
 

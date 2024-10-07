@@ -14,13 +14,13 @@ $task = static function(Channel $channel) {
     $events->addChannel($channel);
     foreach($events as $event) {
         switch ($event->type) {
-            case Event\type::Read:
+            case Event\Type::Read:
                 $sleep_time = $event->value;
                 sleep($sleep_time);
                 echo ".";
                 $events->addChannel($channel);
                 break;
-            case Event\type::Close:
+            case Event\Type::Close:
                 echo "bye\n";
                 die;
         }   

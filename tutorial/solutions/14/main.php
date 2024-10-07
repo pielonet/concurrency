@@ -11,7 +11,7 @@ $channel1 = Channel::make('channel1', Channel::Infinite);
 $channel2 = Channel::make('channel2', Channel::Infinite);
 
 $source1 = \parallel\run(function($channel) {
-    for ($i=1; $i <=10; $i++) {
+    for ($i=1; $i <=5; $i++) {
         sleep(1);
         $channel->send(random_int(0,1000));
     }
@@ -19,7 +19,7 @@ $source1 = \parallel\run(function($channel) {
 }, [$channel1]);
 
 $source2 = \parallel\run(function($channel) {
-    for ($i=1; $i <=10; $i++) {
+    for ($i=1; $i <=5; $i++) {
         sleep(2);
         $channel->send(random_int(0,1000));
     }
@@ -51,3 +51,6 @@ while ($event = $events->poll()) {
     $value1 = null;
     $value2 = null;
 }
+
+$source1->cancel();
+$source2->cancel();

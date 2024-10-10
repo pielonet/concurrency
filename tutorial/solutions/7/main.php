@@ -28,4 +28,3 @@ while ($simulated_duration <= $simulated_seconds) {
     usleep($virtual_second);
 }
 
-$channel->close();

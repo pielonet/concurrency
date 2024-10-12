@@ -1,4 +1,4 @@
 *.log
 out.txt
-config.php
 vendor/
+tutorial/examples/7/config.php

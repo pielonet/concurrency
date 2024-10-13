@@ -1,12 +1,13 @@
 # concurrency
-PHP parallel programming tutorial and examples using php/parallel extension
+PHP parallel programming tutorial and examples using [php/parallel](https://www.php.net/manual/en/book.parallel.php) extension
 
-- PHP/parallel optimized run examples (runs mostly the same as Guzzle/HTTP promises https://docs.guzzlephp.org/en/stable/quickstart.html#concurrent-requests)
 - Comparison between single and multiple waiting queues (at post office...)
+- PHP/parallel optimized run examples
+- Step by step tutorial with exercises and solutions
 
-## How to run
+## How to run examples
 
-- Install Docker
+- [Install Docker](https://docs.docker.com/engine/install/)
 
 - Run a script e.g simulateQueue.php (may take much time on the first run since the Docker container is being build)
 ```bash
@@ -53,7 +54,7 @@ Each examples/X (where X stands for the number of the example) can be run with t
 - `101` : Prime sieve with daisy-chain filter processes compared to sequential algorithm
 - `102` : Fibonacci : Mimics the Go "select" statement with event-loop
 
-## Utils
+## Utils (Linux)
 
 - Get number of threads for your process
 ```bash

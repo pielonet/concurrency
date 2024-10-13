@@ -65,3 +65,12 @@ ps -o thcount <pid>
 ```bash
 vmstat 1
 ```
+
+## Links
+
+- [PHP/parallel repository](https://github.com/krakjoe/parallel)
+- [A more complex parallel example: a Web crawler by Joe Watkins aka Krakjoe](https://gist.github.com/krakjoe/0ee02b887288720d9b785c9f947f3a0a)
+
+## Fund php/parallel
+
+[![GoFundMe](https://img.shields.io/badge/GoFundMe-00B964.svg?style=for-the-badge&logo=GoFundMe&logoColor=white)](https://gofund.me/c34f3dde)
